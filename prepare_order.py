@@ -18,7 +18,7 @@ class PrepareOrder:
         self.cashiers = CashierConverter().convert(df_cashiers)
                 
         # --- Customers ---
-        
+        500
         df_customers = CSVFileManager(f"{data_dir}customers.csv").read()
         self.customers = CustomerConverter().convert(df_customers)
 
