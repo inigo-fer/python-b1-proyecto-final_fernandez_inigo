@@ -11,7 +11,7 @@ class Converter(ABC):
       print(item.describe())
 
 class CashierConverter(Converter):
-  '''Conversión de cada linea del dataframe  en un item de una lista de objetos de la clase user.cashier'''
+  """Conversión de cada linea del dataframe  en un item de una lista de objetos de la clase user.cashier."""
   def convert(self,dataFrame):    
       cashier_list=[]
       for _, row in dataFrame.iterrows(): # _ para indicar que no el index del dataframe no se utilizará
@@ -26,7 +26,7 @@ class CashierConverter(Converter):
       return cashier_list
 
 class CustomerConverter(Converter):
-    '''Conversión de cada linea del dataframe en un item de una lista de objetos de la clase user.customer'''
+    """Conversión de cada linea del dataframe en un item de una lista de objetos de la clase user.customer."""
     def convert(self,dataFrame):    
       customer_list=[]
       for _, row in dataFrame.iterrows():
@@ -41,8 +41,8 @@ class CustomerConverter(Converter):
       return customer_list
 
 class ProductConverter(Converter):
-  '''Conversión de cada linea del dataframe en un item de una lista de objetos de subclase product 
-  en función del tipo de producto'''
+  """Conversión de cada linea del dataframe en un item de una lista de objetos de subclase product 
+  en función del tipo de producto."""
   def convert(self,dataFrame,product_type):    
       product_list=[]
       for _, row in dataFrame.iterrows():

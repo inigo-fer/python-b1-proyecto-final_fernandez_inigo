@@ -3,7 +3,7 @@ from products.product import Product
 
 
 class Order:
-  '''Clase que representa el pedido que está siendo procesado'''
+  """Clase que representa el pedido que está siendo procesado."""
 
   def __init__(self, cashier:Cashier, customer:Customer):
     self.cashier = cashier
@@ -12,11 +12,11 @@ class Order:
 
   
   def add(self, product : Product):
-    '''Función para añadir un producto al pedido'''
+    """Función para añadir un producto al pedido."""
     self.products.append(product)
 
   def calculateTotal(self) -> float:
-    '''Función para calcular el precio total del pedido'''
+    """Función para calcular el precio total del pedido."""
     total=0.0
     for product in self.products:
             total += product.price
