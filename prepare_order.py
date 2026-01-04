@@ -18,21 +18,25 @@ class PrepareOrder:
         self.cashiers = CashierConverter().convert(df_cashiers)
                 
         # --- Customers ---
-        500
         df_customers = CSVFileManager(f"{data_dir}customers.csv").read()
         self.customers = CustomerConverter().convert(df_customers)
 
         # --- Products por tipo ---
-        
-        df_hamburgers = CSVFileManager(f"{data_dir}hamburgers.csv").read()
-        df_sodas = CSVFileManager(f"{data_dir}sodas.csv").read()
-        df_drinks = CSVFileManager(f"{data_dir}drinks.csv").read()
-        df_happy = CSVFileManager(f"{data_dir}happyMeal.csv").read()
+        # Diccionario para con tipos y atributos
+        product_info = {
+            "hamburgers": ("hamburgers", "Hamburger"),
+            "sodas": ("sodas", "Soda"),
+            "drinks": ("drinks", "Drink"),
+            "happyMeal": ("happy_meals", "HappyMeal"),
+        }
 
-        self.hamburgers = ProductConverter().convert(df_hamburgers,"Hamburger")
-        self.sodas = ProductConverter().convert(df_sodas,"Soda")
-        self.drinks = ProductConverter().convert(df_drinks,"Drink")
-        self.happy_meals = ProductConverter().convert(df_happy,"HappyMeal")
+        # Para cada tipo, lee el csv correspondiente, lo conviernte en data frame y lo almacena dinámicamente en el atributo
+        for filename, (attr_name, type_name) in product_info.items():
+            csv_path = f"{data_dir}{filename}.csv"
+            df = CSVFileManager(csv_path).read()
+            products = ProductConverter().convert(df, type_name)
+            self.__dict__[attr_name] = products
+
 
     # --- FUNCIONES ACCESORIAS ---
     def list_cashiers(self):
@@ -54,20 +58,21 @@ class PrepareOrder:
         for p in products:
             print(f"- {p.id} | {p.name} | {p.price}")
 
+    def _find_by_dni(self, dni: str, collection):
+        """Busca un objeto con atributo dni dentro de una colección."""
+        dni = dni.strip()
+        for obj in collection:
+            if str(obj.dni).strip() == dni:
+                return obj
+        return None
+    
     def find_cashier(self, dni: str):
         """Busca cajeros."""
-        dni = dni.strip()
-        for c in self.cashiers:
-            if str(c.dni).strip() == dni:
-                return c
-        return None
+        return self._find_by_dni(dni, self.cashiers)
 
     def find_customer(self, dni: str):
         """Busca clientes."""
-        for u in self.customers:
-            if str(u.dni) == dni:
-                return u
-        return None
+        return self._find_by_dni(dni, self.customers)
 
     def find_product_by_id_in_type(self, product_id: str, type_str: str):
         """Busca un producto por id dentro de la lista del tipo seleccionado."""
@@ -138,14 +143,14 @@ class PrepareOrder:
                 print("Type number incorrect.")
                 continue
 
-            # Listar productos del tipo y seleccionar por id
+            # Listar productos del t5001ipo y seleccionar por id
             self.list_products_of_type(type_str)
             pid = input("Insert product id: ").strip().upper()
             product = self.find_product_by_id_in_type(pid, type_str)
             if not product:
                 print("Product not found.")
             else:
-                print(product.describe())
+                print(product.describe()+"\n")
                 order.add(product)
 
             # ¿Añadir otro producto? Si elgie no, se enseña el pedido final
