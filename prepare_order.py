@@ -5,7 +5,7 @@ from util.converter import CashierConverter, CustomerConverter, ProductConverter
 from orders import Order
 
 class PrepareOrder:
-    """Clase principal que permita integrar los módulos y preparar los pedidos."""
+    """Clase principal que permite integrar los módulos y preparar los pedidos."""
     
     def __init__(self, data_dir='data/'):
         """Método __init__ para que la lectura y conversión ocurra al lanzar PrepareOrder."""
@@ -22,7 +22,7 @@ class PrepareOrder:
         self.customers = CustomerConverter().convert(df_customers)
 
         # --- Products por tipo ---
-        # Diccionario para con tipos y atributos
+        # Diccionario con tipos y atributos para usar en lectura y conversión del CSV
         product_info = {
             "hamburgers": ("hamburgers", "Hamburger"),
             "sodas": ("sodas", "Soda"),
@@ -30,7 +30,7 @@ class PrepareOrder:
             "happyMeal": ("happy_meals", "HappyMeal"),
         }
 
-        # Para cada tipo, lee el csv correspondiente, lo conviernte en data frame y lo almacena dinámicamente en el atributo
+        # Para cada tipo, lee el CSV correspondiente, lo convierte en data frame y lo almacena dinámicamente en el atributo
         for filename, (attr_name, type_name) in product_info.items():
             csv_path = f"{data_dir}{filename}.csv"
             df = CSVFileManager(csv_path).read()
@@ -143,7 +143,7 @@ class PrepareOrder:
                 print("Type number incorrect.")
                 continue
 
-            # Listar productos del t5001ipo y seleccionar por id
+            # Listar productos del tipo elegido y seleccionar por id
             self.list_products_of_type(type_str)
             pid = input("Insert product id: ").strip().upper()
             product = self.find_product_by_id_in_type(pid, type_str)
